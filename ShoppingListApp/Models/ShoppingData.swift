@@ -7,7 +7,6 @@
 import UIKit
 
 struct ShoppingData {
-    // Declare groups as a mutable property using `var`
     static var groups: [ShoppingGroup] = [
         ShoppingGroup(name: "Apple", items: [
             ShoppingItem(name: "Green Apple", price: 1.50, imageName: "green_apple", taxGroup: .standard, category: "Apple"),
@@ -28,15 +27,34 @@ struct ShoppingData {
             ShoppingItem(name: "Hand Soap", price: 3.99, imageName: "hand_soap", taxGroup: .reduced8, category: "Health")
         ], iconName: "health_icon")
     ]
+
+    // Method to add a new group
+    static func addGroup(group: ShoppingGroup) {
+        groups.append(group)
+    }
     
-    // Method to add a new item
+    // Method to update an existing group
+    static func updateGroup(oldGroupName: String, newGroup: ShoppingGroup) {
+        if let groupIndex = groups.firstIndex(where: { $0.name == oldGroupName }) {
+            groups[groupIndex] = newGroup
+        }
+    }
+
+    // Method to delete a group
+    static func deleteGroup(groupName: String) {
+        if let groupIndex = groups.firstIndex(where: { $0.name == groupName }) {
+            groups.remove(at: groupIndex)
+        }
+    }
+    
+    // Method to add a new item to a specific group
     static func addItem(to groupName: String, item: ShoppingItem) {
         if let index = groups.firstIndex(where: { $0.name == groupName }) {
             groups[index].items.append(item)
         }
     }
     
-    // Method to update an existing item
+    // Method to update an existing item in a group
     static func updateItem(in groupName: String, itemName: String, newItem: ShoppingItem) {
         if let groupIndex = groups.firstIndex(where: { $0.name == groupName }) {
             if let itemIndex = groups[groupIndex].items.firstIndex(where: { $0.name == itemName }) {
@@ -44,8 +62,8 @@ struct ShoppingData {
             }
         }
     }
-    
-    // Method to delete an item
+
+    // Method to delete an item from a group
     static func deleteItem(from groupName: String, itemName: String) {
         if let groupIndex = groups.firstIndex(where: { $0.name == groupName }) {
             if let itemIndex = groups[groupIndex].items.firstIndex(where: { $0.name == itemName }) {
